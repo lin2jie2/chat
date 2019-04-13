@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+	<title>Chat</title>
+	<script src="pako.min.js"></script>
+	<script src="client.js"></script>
+	<script src="chat.js"></script>
+	<link rel="stylesheet" type="text/css" href="chat.css" />
+</head>
+<body>
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">登录</div>
+		<div class="card-header-actions">
+			<a class="card-header-action">注册</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<form class="form">
+			<div class="form-row">
+				<label class="form-row-label">账号</label>
+				<input class="form-row-input" id="login-username" type="text" name="username" value="" placeholder="请输入 5-30 位字母数字组合" />
+			</div>
+			<div class="form-row-divider"></div>
+			<div class="form-row">
+				<label class="form-row-label">密码</label>
+				<input class="form-row-input" id="login-password" type="password" name="password" value="" placeholder="请输入密码" />
+			</div>
+			<div class="form-row-divider"></div>
+			<div class="form-row form-buttons">
+				<input class="button primary" onclick="login()" type="button" value="登录" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">注册</div>
+		<div class="card-header-actions">
+			<a class="card-header-action">登录</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<form class="form">
+			<div class="form-row">
+				<label class="form-row-label">账号</label>
+				<input class="form-row-input" id="register-username" type="text" name="username" value="" placeholder="请输入 5-30 位字母数字组合" />
+			</div>
+			<div class="form-row-divider"></div>
+			<div class="form-row">
+				<label class="form-row-label">密码</label>
+				<input class="form-row-input" id="register-password" type="password" name="password" value="" placeholder="请输入密码" />
+			</div>
+			<div class="form-row-divider"></div>
+			<div class="form-row form-buttons">
+				<input class="button secondary" onclick="register()" type="button" value="注册" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">直接发</div>
+		<div class="card-header-leading">
+			<a class="card-header-action">返回</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<form class="form">
+			<div class="form-row">
+				<label class="form-row-label">To:</label>
+				<input class="form-row-input" id="receiver-id" type="text" value="" placeholder="对方ID" />
+			</div>
+		</form>
+		<div class="message-list">
+			<div class="message-item other">
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+				<div class="message-container">
+					<div class="message-content text-message">消息内容</div>
+					<div class="message-time">17:23</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-footer">
+		<div class="send-box">
+			<textarea class="input" id="d-chat-input" placeholder="内容"></textarea>
+			<input class="button primary send" type="button" value="发送" onclick="d_send()" />
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">聊天列表</div>
+	</div>
+	<div class="card-body">
+		<div class="chat-list">
+			<div class="chat-item">
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+				<div class="info">
+					<div class="title">聊天室A</div>
+					<div class="latest">普通文本消息</div>
+				</div>
+			</div>
+			<div class="chat-item">
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+				<div class="info">
+					<div class="title">聊天室B</div>
+					<div class="latest">图片</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">聊天窗口</div>
+		<div class="card-header-leading">
+			<a class="card-header-action">返回</a>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="message-list">
+			<div class="message-item other">
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+				<div class="message-container">
+					<div class="message-content text-message">消息内容</div>
+					<div class="message-time">17:23</div>
+				</div>
+			</div>
+			<div class="message-item self">
+				<div class="message-container">
+					<div class="message-content text-message">长一点的消息内容</div>
+					<div class="message-time">17:23</div>
+				</div>
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+			</div>
+			<div class="message-item other">
+				<img class="avatar" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" />
+				<div class="message-container">
+					<div class="message-content text-message">一行放不下的消息内容</div>
+					<div class="message-time">17:23</div>
+				</div>
+			</div>
+			<div class="message-item self">
+				<div class="message-container">
+					<div class="message-content text-message">不显示自己头像长一点的消息内容</div>
+					<div class="message-time">17:23</div>
+				</div>
+			</div>
+			<div class="message-item self">
+				<div class="message-container">
+					<div class="message-content text-message">再来一条消息</div>
+					<div class="message-time">17:23</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-footer">
+		<div class="send-box">
+			<textarea class="input" id="chat-input" placeholder="内容"></textarea>
+			<input class="button send" type="button" value="发送" onclick="send()" />
+			<input id="chat-id" type="hidden" name="chatId" value="1" />
+		</div>
+	</div>
+</div>
+
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-header-title">主界面</div>
+	</div>
+	<div class="card-body">
+		<p>水电费</p>
+	</div>
+	<div class="card-footer">
+		<div class="tabs">
+			<a class="tab">
+				<img class="icon" src="contact.png" />
+				<div class="text">Contacts</div>
+			</a>
+			<a class="tab">
+				<img class="icon" src="chat.png" />
+				<div class="text">Chats</div>
+			</a>
+			<a class="tab">
+				<img class="icon" src="setting.png" />
+				<div class="text">Settings</div>
+			</a>
+		</div>
+	</div>
+</div>
+
+<script>
+var chat = new Chat((location.protocal == 'https:' ? 'wss:' : 'ws:') + '//127.0.0.1:55555')
+chat.startUp()
+
+function login() {
+	let username = document.querySelector('#login-username').value.trim()
+	let password = document.querySelector('#login-password').value
+	chat.signIn(username, password)
+}
+
+function register() {
+	let username = document.querySelector('#register-username').value.trim()
+	let password = document.querySelector('#register-password').value
+	chat.signUp(username, password)
+}
+
+function send() {
+	let msg = document.querySelector('#chat-input').value.trim()
+	if (msg) {
+		let chatId = parseInt(document.querySelector('#chat-id').value, 10)
+		chat.sendMessage(chatId, msg)
+		document.querySelector('#chat-input').value = ''
+	}
+}
+
+function d_send() {
+	let msg = document.querySelector('#d-chat-input').value.trim()
+	if (msg) {
+		let receiverId = parseInt(document.querySelector('#receiver-id').value, 10)
+		chat.sendMessage(receiverId, msg)
+		document.querySelector('#d-chat-input').value = ''
+	}
+}
+</script>
+</body>
+</html>
